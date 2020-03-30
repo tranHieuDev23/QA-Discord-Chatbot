@@ -6,11 +6,12 @@ from predict_intent import guess_intent
 from predict_slot import guess_slot
 import wikipedia
 import random
-from bot_data import GREETINGS, BYES, CONFIRMED, CONFUSED, NO_RESULT, find_best_property_id, get_wikidata_entity_id
+from bot_data import GREETINGS, BYES, CONFIRMED, CONFUSED, NO_RESULT, find_best_property_id, get_wikidata_entity_id, send_image
 from wikidata.client import Client
 
 client = discord.Client()
 wdata = Client()
+
 
 @client.event
 async def on_ready():
@@ -51,12 +52,35 @@ async def get_response(message):
         await answer_property_question(message, subject, prop)
 
 
+def __get_better_url__(url1, url2):
+    if (url1.endswith('.svg') or url2.endswith('.svg')):
+        return url1 if url2.endswith('.svg') else url2
+    if (url2.endswith('.png') or url2.endswith('.png')):
+        return url1 if url2.endswith('.png') else url2
+    return url1
+
+
+def __get_best_url__(urls):
+    result = urls[0]
+    for item in urls[1:]:
+        if (result.endswith('.svg') and not item.endswith('.svg')):
+            result = __get_better_url__(result, item)
+    return result
+
+
 async def answer_definition_question(message, subject):
     channel = message.channel
     author = message.author
     try:
         answer = wikipedia.summary(subject, sentences=2)
         await channel.send(answer)
+
+        answer_page = wikipedia.page(subject)
+        if (len(answer_page.images) > 0):
+            selected_url = __get_best_url__(answer_page.images)
+            dot_id = selected_url.rfind('.')
+            extension = selected_url[dot_id:]
+            await send_image(channel, selected_url, subject + extension)
         return
     except wikipedia.exceptions.PageError as e:
         await channel.send(random.choice(NO_RESULT))

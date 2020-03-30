@@ -1,4 +1,7 @@
 import requests
+import discord
+import io
+import aiohttp
 
 GREETINGS = [
     'Hello there!',
@@ -97,3 +100,12 @@ def get_wikidata_entity_id(title):
         return None
     except RuntimeError as e:
         return None
+
+
+async def send_image(channel, image_url, image_name):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(image_url) as resp:
+            if resp.status != 200:
+                return
+            data = io.BytesIO(await resp.read())
+            await channel.send(file=discord.File(data, image_name))
