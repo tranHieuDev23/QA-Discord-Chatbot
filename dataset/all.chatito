@@ -1,0 +1,46 @@
+import ./common.chatito
+import ./bye.chatito
+import ./greet.chatito
+import ./no.chatito
+import ./question.chatito
+import ./yes.chatito
+
+%[greet]('training': '350', 'testing': '50')
+    *[20%] ~[hi]
+    ~[greetings]
+    ~[hi] ~[greetings?]
+    ~[hi] ~[whats up]
+    ~[greetings] ~[whats up]
+    ~[hi] ~[greetings] ~[whats up]
+
+%[bye]('training': '175', 'testing': '25')
+    *[20%] ~[bye]
+    ~[thanks?] ~[bye]
+    ~[bye] ~[thanks?]
+    ~[leaving]
+    ~[leaving] ~[bye]
+
+%[affirmative]('training': '175', 'testing': '25')
+    *[20%] ~[yes]
+    ~[yes] ~[please?]
+    ~[yes] ~[yes?] ~[thanks?]
+    ~[yes?] ~[that is good] ~[yes?]
+
+%[negative]('training': '175', 'testing': '25')
+    *[20%] ~[no]
+    ~[no] ~[please?] ~[its not ok?]
+    ~[please?] ~[no] ~[its not ok?]
+    *[20%] ~[its not ok]
+
+%[definitionQuestion]('training': '1000', 'testing': '100')
+    *[20%] ~[find?] ~[the?] ~[definition] of @[subject]
+    *[10%] what is ~[the?] ~[definition] of @[subject]
+    *[10%] what does @[subject] means
+    *[10%] define @[subject]
+    *[50%] ~[what] ~[is] @[subject]
+
+%[propertyQuestion]('training': '1000', 'testing': '100')
+    *[30%] ~[what] ~[is] @[property] of @[subject]
+    *[30%] ~[what] ~[is] @[subject]'s @[property]
+    *[20%] @[property] of @[subject]
+    *[20%] @[subject]'s @[property]
