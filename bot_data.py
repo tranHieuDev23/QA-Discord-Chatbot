@@ -2,7 +2,7 @@ import requests
 
 GREETINGS = [
     'Hello there!',
-    'How can I help you?'
+    'How can I help you?',
     'Beep boop?',
     'It\'s a pleasure to meet you!',
     'Hi there!'
@@ -10,10 +10,10 @@ GREETINGS = [
 
 BYES = [
     'Farewell',
-    'Hope to see you soon!'
-    'When you need help, don\'t hesitate to ask!'
-    'I will miss you!'
-    'Take care!'
+    'Hope to see you soon!',
+    'When you need help, don\'t hesitate to ask!',
+    'I will miss you!',
+    'Take care!',
 ]
 
 CONFUSED = [

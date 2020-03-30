@@ -101,11 +101,13 @@ async def answer_property_question(message, subject, prop):
             await channel.send(random.choice(NO_RESULT))
             return
         entity = wdata.get(entity_id, load=True)
-        print(entity)
         property_id = find_best_property_id(prop)
         prop_obj = wdata.get(property_id)
-        answer = entity[prop_obj]
-        await channel.send(answer.label)
+        try:
+            answer = entity[prop_obj]
+            await channel.send(answer.label)
+        except:
+            await channel.send(random.choice(NO_RESULT))
         return
     except wikipedia.exceptions.PageError as e:
         await channel.send(random.choice(NO_RESULT))
